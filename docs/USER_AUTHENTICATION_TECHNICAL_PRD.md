@@ -247,7 +247,7 @@ The session is validated in Next.js middleware on every request to a protected r
 
 ### Key Files
 
-- `migrations/0001_users_table.sql` — users table schema
+- `migrations/0001_init_users_table.sql` — users table schema
 - `src/lib/auth.ts` — password hashing, session creation/validation, cookie helpers
 - `src/lib/d1-client.ts` — shared D1 database helpers
 - `src/middleware.ts` — route protection and session validation
