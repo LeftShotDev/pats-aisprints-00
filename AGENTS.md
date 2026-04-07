@@ -113,3 +113,12 @@ pat-aisprints-00/
 2. **Database Changes**: Create and apply migrations using Wrangler commands
 3. **Deployment**: Use `npm run deploy` to deploy to Cloudflare Workers
 4. **Environment Updates**: Modify `.dev.vars` for local changes, use Wrangler secrets for production
+
+## Agent Chat History
+
+Daily chat history files are stored in the `agent-history/` directory at the project root.
+
+- **Convention**: At the end of each working day, generate a chat history `.txt` file from the agent session and save it into `agent-history/`
+- **Naming**: Use the format `sprint_<N>.txt` (e.g. `sprint_one.txt`, `sprint_two.txt`) or a date-based name (e.g. `2026-04-07.txt`) — whichever best describes the session
+- **How to generate**: Ask the agent — *"Generate a .txt file with the contents of this agent's chat history"* — and it will extract and write the file. Then move or rename it into `agent-history/` as needed
+- **Purpose**: Provides a persistent, human-readable record of decisions, implementations, and fixes made during each sprint day
