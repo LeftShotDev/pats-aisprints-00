@@ -13,7 +13,12 @@ const SESSION_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   const pairs = hex.match(/.{2}/g) ?? [];
-  return new Uint8Array(pairs.map((b) => parseInt(b, 16))) as Uint8Array<ArrayBuffer>;
+  const buffer = new ArrayBuffer(pairs.length);
+  const arr = new Uint8Array(buffer);
+  for (let i = 0; i < pairs.length; i++) {
+    arr[i] = parseInt(pairs[i], 16);
+  }
+  return arr;
 }
 
 function bytesToHex(bytes: Uint8Array): string {
@@ -57,7 +62,9 @@ async function verifyHmac(data: string, signature: string, secret: string): Prom
  * Returns a string in the format `saltHex:keyHex`.
  */
 export async function hashPassword(password: string): Promise<string> {
-  const salt = crypto.getRandomValues(new Uint8Array(16)) as Uint8Array<ArrayBuffer>;
+  const saltBuffer = new ArrayBuffer(16);
+  const salt = new Uint8Array(saltBuffer);
+  crypto.getRandomValues(salt);
   const encoder = new TextEncoder();
 
   const keyMaterial = await crypto.subtle.importKey(
