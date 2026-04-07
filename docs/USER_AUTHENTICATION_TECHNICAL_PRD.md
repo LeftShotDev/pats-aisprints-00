@@ -163,26 +163,27 @@ The session is validated in Next.js middleware on every request to a protected r
 
 ## Implementation Phases
 
-### Phase 1: Database & Core Auth Logic - 🚧 IN PROGRESS
+### Phase 1: Database & Core Auth Logic - ✅ COMPLETED
 
 **Objective**: Create the users table migration and implement the core password hashing and session utilities.
 
 **Tasks**:
 
-1. Create D1 migration for the `users` table
-2. Apply migration locally
-3. Implement password hashing helpers in `src/lib/auth.ts` (using `bcryptjs` or `crypto` SubtleCrypto)
-4. Implement session creation, reading, and validation helpers in `src/lib/auth.ts`
-5. Add `HMAC_SECRET` to `.dev.vars`
+1. Create D1 migration for the `users` table ✅
+2. Apply migration locally ✅
+3. Implement password hashing helpers in `src/lib/auth.ts` (PBKDF2 via SubtleCrypto) ✅
+4. Implement session creation, reading, and validation helpers in `src/lib/auth.ts` ✅
+5. Add `HMAC_SECRET` to `.dev.vars` ✅
 
 **Deliverables**:
 
-- `migrations/0001_users_table.sql`
-- `src/lib/auth.ts`
+- `migrations/0001_init_users_table.sql` ✅
+- `src/lib/auth.ts` ✅
+- `src/lib/d1-client.ts` ✅ (delivered early — required by Phase 2)
 
 ---
 
-### Phase 2: API Routes - ⏳ PLANNED
+### Phase 2: API Routes - 🚧 IN PROGRESS
 
 **Objective**: Implement the four auth API endpoints.
 
@@ -412,6 +413,6 @@ export const config = {
 ## Current Status
 
 **Last Updated**: April 7, 2026
-**Current Phase**: Phase 1 - Database & Core Auth Logic
+**Current Phase**: Phase 2 - API Routes
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Phase 2 — implement the four API route handlers (`/api/auth/signup`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`)
+**Next Steps**: Phase 3 — implement Next.js middleware for route protection
