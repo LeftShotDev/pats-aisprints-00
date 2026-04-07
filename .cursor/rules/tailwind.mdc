@@ -6,7 +6,6 @@ alwaysApply: true
 
 ## Tailwind Configuration
 
-- The Tailwind configuration is located at `tailwind.config.ts`.
 - All CSS imports should be in the `src/app/globals.css` file.
 
 ## Styling

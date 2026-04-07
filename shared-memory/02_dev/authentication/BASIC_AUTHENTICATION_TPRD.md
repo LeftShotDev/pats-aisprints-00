@@ -151,7 +151,7 @@ CREATE TABLE users (
 #### Protected Routes
 
 - `/` (root) - redirects to login if not authenticated
-- `/mcqs/*` - MCQ management routes
+- `/mcqs/`* - MCQ management routes
 - Any future authenticated routes
 
 #### Public Routes
@@ -408,29 +408,29 @@ CREATE INDEX idx_users_created_at ON users (created_at);
 
 #### Database Layer
 
-- **`migrations/0001_users_table.sql`**: User table schema with indexes
-- **`lib/d1-client.ts`**: Centralized D1 database access with parameter binding normalization
-- **`lib/services/user-service.ts`**: User CRUD operations and business logic
+- `**migrations/0001_users_table.sql`**: User table schema with indexes
+- `**lib/d1-client.ts**`: Centralized D1 database access with parameter binding normalization
+- `**lib/services/user-service.ts**`: User CRUD operations and business logic
 
 #### Authentication Layer
 
-- **`lib/auth.ts`**: Password hashing, session management, cookie handling
-- **`middleware.ts`**: Route protection and session validation
+- `**lib/auth.ts**`: Password hashing, session management, cookie handling
+- `**middleware.ts**`: Route protection and session validation
 
 #### API Layer
 
-- **`app/api/auth/signup/route.ts`**: User registration endpoint
-- **`app/api/auth/login/route.ts`**: User login endpoint
-- **`app/api/auth/logout/route.ts`**: Session cleanup endpoint
-- **`app/api/auth/me/route.ts`**: Current user information endpoint
+- `**app/api/auth/signup/route.ts**`: User registration endpoint
+- `**app/api/auth/login/route.ts**`: User login endpoint
+- `**app/api/auth/logout/route.ts**`: Session cleanup endpoint
+- `**app/api/auth/me/route.ts**`: Current user information endpoint
 
 #### Frontend Layer
 
-- **`app/signup/page.tsx`**: Registration page wrapper
-- **`app/login/page.tsx`**: Login page wrapper
-- **`app/mcqs/page.tsx`**: Authenticated user landing page
-- **`components/signup-form.tsx`**: Registration form with validation
-- **`components/login-form.tsx`**: Login form with validation
+- `**app/signup/page.tsx**`: Registration page wrapper
+- `**app/login/page.tsx**`: Login page wrapper
+- `**app/mcqs/page.tsx**`: Authenticated user landing page
+- `**components/signup-form.tsx**`: Registration form with validation
+- `**components/login-form.tsx**`: Login form with validation
 
 ### Key Implementation Patterns
 
@@ -731,10 +731,8 @@ if (Date.now() > (session.expiresAt as number)) {
 
 - **Risk**: Password compromise
 - **Mitigation**: Strong hashing, secure session management
-
 - **Risk**: Session hijacking
 - **Mitigation**: Secure cookies, HTTPS enforcement
-
 - **Risk**: SQL injection
 - **Mitigation**: Prepared statements, input validation
 
@@ -742,7 +740,6 @@ if (Date.now() > (session.expiresAt as number)) {
 
 - **Risk**: Session management complexity
 - **Mitigation**: Use proven patterns, thorough testing
-
 - **Risk**: Database performance
 - **Mitigation**: Proper indexing, query optimization
 

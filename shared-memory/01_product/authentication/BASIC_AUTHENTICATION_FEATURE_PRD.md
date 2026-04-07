@@ -87,10 +87,12 @@ AI agents should read the YAML file for specific implementation details.
 **Objective**: Set up user table and database connectivity
 
 **Features** (from YAML):
+
 - Database schema for users table
 - D1 client with parameter binding
 
 **Deliverables**:
+
 - `migrations/0001_users_table.sql`
 - `lib/d1-client.ts`
 
@@ -99,12 +101,14 @@ AI agents should read the YAML file for specific implementation details.
 **Objective**: Implement core authentication services
 
 **Features** (from YAML):
+
 1. `password hashing` - security feature
 2. `create user account` - api feature
 3. `authenticate user` - api feature
 4. `session management` - security feature
 
 **Deliverables**:
+
 - `lib/auth.ts`
 - `app/api/auth/signup/route.ts`
 - `app/api/auth/login/route.ts`
@@ -115,10 +119,12 @@ AI agents should read the YAML file for specific implementation details.
 **Objective**: Build user interface for registration and login
 
 **Features** (from YAML):
+
 1. `user registration form` - ui feature
 2. `user login form` - ui feature
 
 **Deliverables**:
+
 - `app/signup/page.tsx`
 - `app/login/page.tsx`
 - `components/signup-form.tsx`
@@ -129,9 +135,11 @@ AI agents should read the YAML file for specific implementation details.
 **Objective**: Protect authenticated routes
 
 **Features** (from YAML):
+
 1. `route protection` - middleware feature
 
 **Deliverables**:
+
 - `middleware.ts`
 
 ---
@@ -157,12 +165,12 @@ AI agents should read the YAML file for specific implementation details.
 
 ## Success Criteria
 
-- [x] Users can register with valid information
-- [x] Users can log in with correct credentials
-- [x] Invalid credentials are rejected
-- [x] Sessions persist across page refreshes
-- [x] Protected routes redirect unauthenticated users
-- [x] Public routes remain accessible
+- Users can register with valid information
+- Users can log in with correct credentials
+- Invalid credentials are rejected
+- Sessions persist across page refreshes
+- Protected routes redirect unauthenticated users
+- Public routes remain accessible
 
 ---
 
