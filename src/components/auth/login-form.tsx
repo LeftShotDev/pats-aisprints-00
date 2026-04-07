@@ -52,7 +52,7 @@ export function LoginForm() {
       return;
     }
 
-    const body = await response.json();
+    const body = await response.json() as { error?: string };
     setApiError(body.error ?? "Something went wrong. Please try again.");
   }
 
