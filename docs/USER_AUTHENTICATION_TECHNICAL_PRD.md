@@ -9,12 +9,14 @@ This document outlines the requirements for implementing the user authentication
 ## Business Requirements
 
 ### Account Management
+
 - Teachers can register for an account with their name, email address, and a password
 - Email addresses must be unique across all accounts
 - Passwords must meet a minimum security standard (8+ characters)
 - Teachers can log out of their account from any page
 
 ### Authentication & Access
+
 - Teachers can log in with their registered email and password
 - Invalid credentials must be rejected with a clear error message
 - Authenticated sessions must persist across page refreshes and browser restarts (within a reasonable expiry window)
@@ -23,6 +25,7 @@ This document outlines the requirements for implementing the user authentication
 - Sign-up and login forms must be compatible with password managers — inputs must use correct `name`, `type`, and `autocomplete` attributes so browsers and password managers can offer to save and autofill credentials
 
 ### Privacy & Security
+
 - Each teacher's content is private and only accessible to them
 - Passwords must never be stored in plain text
 - Session tokens must be stored in secure, HTTP-only cookies
@@ -56,6 +59,7 @@ CREATE INDEX idx_users_created_at ON users (created_at);
 Registers a new teacher account.
 
 **Request Body:**
+
 ```json
 {
   "name": "string",
@@ -65,6 +69,7 @@ Registers a new teacher account.
 ```
 
 **Response:**
+
 - Success (201): `{ "user": { "id": "string", "name": "string", "email": "string" } }` — sets session cookie
 - Error (400): `{ "error": "Validation error message" }` — missing fields or password too short
 - Error (409): `{ "error": "Email already registered" }` — duplicate email
@@ -77,6 +82,7 @@ Registers a new teacher account.
 Authenticates an existing teacher.
 
 **Request Body:**
+
 ```json
 {
   "email": "string",
@@ -85,6 +91,7 @@ Authenticates an existing teacher.
 ```
 
 **Response:**
+
 - Success (200): `{ "user": { "id": "string", "name": "string", "email": "string" } }` — sets session cookie
 - Error (400): `{ "error": "Email and password are required" }`
 - Error (401): `{ "error": "Invalid email or password" }`
@@ -97,6 +104,7 @@ Authenticates an existing teacher.
 Clears the session cookie.
 
 **Response:**
+
 - Success (200): `{ "success": true }` — clears session cookie
 
 ---
@@ -106,6 +114,7 @@ Clears the session cookie.
 Returns the currently authenticated user. Used to hydrate client-side session state.
 
 **Response:**
+
 - Success (200): `{ "user": { "id": "string", "name": "string", "email": "string" } }`
 - Error (401): `{ "error": "Not authenticated" }`
 
@@ -374,9 +383,11 @@ export const config = {
 
 ### Environment Variables
 
-| Variable | Location | Purpose |
-|---|---|---|
+
+| Variable      | Location                        | Purpose                           |
+| ------------- | ------------------------------- | --------------------------------- |
 | `HMAC_SECRET` | `.dev.vars` / Cloudflare secret | Signs and verifies session tokens |
+
 
 ---
 
@@ -386,10 +397,8 @@ export const config = {
 
 - **Risk**: `SubtleCrypto` PBKDF2 is slower than bcrypt and the implementation is more verbose
 - **Mitigation**: Use a well-tested helper pattern; performance is acceptable for auth flows
-
 - **Risk**: Session tokens stored in cookies can be forged if `HMAC_SECRET` leaks
 - **Mitigation**: Never commit `HMAC_SECRET` to the repo; rotate the secret if compromised (all existing sessions will be invalidated)
-
 - **Risk**: SQL injection via user-supplied email or password
 - **Mitigation**: All queries use prepared statements via `src/lib/d1-client.ts` helpers
 
