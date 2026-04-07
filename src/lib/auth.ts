@@ -11,9 +11,9 @@ const SESSION_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 // Internal crypto helpers (SubtleCrypto — compatible with Cloudflare Workers)
 // ---------------------------------------------------------------------------
 
-function hexToBytes(hex: string): Uint8Array {
+function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   const pairs = hex.match(/.{2}/g) ?? [];
-  return new Uint8Array(pairs.map((b) => parseInt(b, 16)));
+  return new Uint8Array(pairs.map((b) => parseInt(b, 16))) as Uint8Array<ArrayBuffer>;
 }
 
 function bytesToHex(bytes: Uint8Array): string {
@@ -57,7 +57,7 @@ async function verifyHmac(data: string, signature: string, secret: string): Prom
  * Returns a string in the format `saltHex:keyHex`.
  */
 export async function hashPassword(password: string): Promise<string> {
-  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const salt = crypto.getRandomValues(new Uint8Array(16)) as Uint8Array<ArrayBuffer>;
   const encoder = new TextEncoder();
 
   const keyMaterial = await crypto.subtle.importKey(
