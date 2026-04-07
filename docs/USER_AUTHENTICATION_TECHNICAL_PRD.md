@@ -183,39 +183,40 @@ The session is validated in Next.js middleware on every request to a protected r
 
 ---
 
-### Phase 2: API Routes - 🚧 IN PROGRESS
+### Phase 2: API Routes - ✅ COMPLETED
 
 **Objective**: Implement the four auth API endpoints.
 
 **Tasks**:
 
-1. `POST /api/auth/signup` — validate input, check for duplicate email, hash password, insert user, set session cookie
-2. `POST /api/auth/login` — validate input, look up user by email, compare password hash, set session cookie
-3. `POST /api/auth/logout` — clear session cookie
-4. `GET /api/auth/me` — read and validate session cookie, return user data
+1. `POST /api/auth/signup` — validate input, check for duplicate email, hash password, insert user, set session cookie ✅
+2. `POST /api/auth/login` — validate input, look up user by email, compare password hash, set session cookie ✅
+3. `POST /api/auth/logout` — clear session cookie ✅
+4. `GET /api/auth/me` — read and validate session cookie, return user data ✅
 
 **Deliverables**:
 
-- `src/app/api/auth/signup/route.ts`
-- `src/app/api/auth/login/route.ts`
-- `src/app/api/auth/logout/route.ts`
-- `src/app/api/auth/me/route.ts`
+- `src/app/api/auth/signup/route.ts` ✅
+- `src/app/api/auth/login/route.ts` ✅
+- `src/app/api/auth/logout/route.ts` ✅
+- `src/app/api/auth/me/route.ts` ✅
+- `src/lib/services/user-service.ts` ✅ (shared data layer for all routes)
 
 ---
 
-### Phase 3: Route Protection (Middleware) - ⏳ PLANNED
+### Phase 3: Route Protection (Middleware) - ✅ COMPLETED
 
 **Objective**: Protect all MCQ routes and redirect unauthenticated users.
 
 **Tasks**:
 
-1. Implement Next.js middleware to validate the session cookie on every request
-2. Redirect unauthenticated requests to `/login` (preserving the intended destination as a query param)
-3. Redirect authenticated users away from `/login` and `/signup` to `/mcqs`
+1. Implement Next.js middleware to validate the session cookie on every request ✅
+2. Redirect unauthenticated requests to `/login` (preserving the intended destination as a query param) ✅
+3. Redirect authenticated users away from `/login` and `/signup` to `/mcqs` ✅
 
 **Deliverables**:
 
-- `src/middleware.ts`
+- `src/middleware.ts` ✅
 
 ---
 
@@ -413,6 +414,6 @@ export const config = {
 ## Current Status
 
 **Last Updated**: April 7, 2026
-**Current Phase**: Phase 2 - API Routes
+**Current Phase**: Phase 3 - Route Protection (Middleware)
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Phase 3 — implement Next.js middleware for route protection
+**Next Steps**: Phase 4 — build signup, login, and logout UI pages and components
