@@ -1,35 +1,33 @@
-# AISprints Starter
+# QuizMaker
 
-This repository is a starter template for aisprints. It is designed for experienced human programmers who are well-versed in end-to-end software development to use AI effectively for developing and maintaining software applications.
+QuizMaker is a web-based application for K-12 teachers to create, manage, and share multiple choice questions (MCQs) for classroom assessments. Teachers can build questions manually or use AI to generate standards-aligned questions based on Texas Essential Knowledge and Skills (TEKS).
 
-## Purpose
+## Features
 
-This starter provides a structured approach to AI-assisted development by offering:
+### Secure Teacher Accounts
+- Email and password registration
+- Secure login with session persistence
+- All content is private and protected behind authentication
 
-- **Cursor Rules** (`AGENTS.md` and `.cursor\rules`) - Intended to create and maintain comprehensive guidelines and constraints that guide AI behavior during development
-- **Technical PRD Templates** (`docs/TECHNICAL_PRD_TEMPLATE.md`) - Standardized templates for documenting technical product requirements, implementation phases, and progress tracking
+### MCQ Library Management
+- Create questions with a title, description, question stem, and 2–6 answer choices
+- Edit and delete existing questions
+- Search and browse your question library with pagination
+- Preview and attempt questions before classroom use
 
-These resources ensure that AI agents are guided and constrained by established rules and your specific directions, enabling more predictable and maintainable development workflows.
-
-## Getting Started
-
-1. Review the cursor rules in `AGENTS.md` to understand the development guidelines
-2. Use the technical PRD template in `docs/TECHNICAL_PRD_TEMPLATE.md` when starting new features
-3. Customize the rules and templates to match your project's specific needs
-
-## Project Structure
-
-- `AGENTS.md` - Cursor rules and development guidelines
-- `docs/TECHNICAL_PRD_TEMPLATE.md` - Template for technical product requirement documents
-- `docs/PROJECT_OVERVIEW.md` - Project-specific documentation
+### AI-Powered TEKS Question Generation
+- Select a subject, grade level, strand, and specific TEKS standard
+- AI generates a complete question — stem, choices, and correct answer
+- Review and edit the generated question before saving
 
 ## Technology Stack
 
-This starter is built on:
-
-- [Next.js](https://nextjs.org) - React framework
-- [Cloudflare Workers](https://workers.cloudflare.com) - Serverless deployment platform
-- [OpenNext.js](https://opennext.js.org/cloudflare) - Next.js adapter for Cloudflare
+- [Next.js 15](https://nextjs.org) — React framework (App Router)
+- [Cloudflare Workers](https://workers.cloudflare.com) — Serverless deployment
+- [Cloudflare D1](https://developers.cloudflare.com/d1/) — SQLite database
+- [OpenNext.js](https://opennext.js.org/cloudflare) — Next.js adapter for Cloudflare
+- [shadcn/ui](https://ui.shadcn.com) — UI components
+- [Tailwind CSS 4](https://tailwindcss.com) — Styling
 
 ## Development
 
@@ -39,7 +37,7 @@ Run the Next.js development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Preview
 
@@ -51,8 +49,14 @@ npm run preview
 
 ## Deploy
 
-Deploy the application to Cloudflare:
+Deploy to Cloudflare Workers:
 
 ```bash
 npm run deploy
 ```
+
+## Project Documentation
+
+- [`AGENTS.md`](AGENTS.md) — AI development guidelines and project conventions
+- [`docs/`](docs/) — Feature spec documents (Technical PRDs)
+- [`shared-memory/`](shared-memory/) — Product overview and persistent AI context
