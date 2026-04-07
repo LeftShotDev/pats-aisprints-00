@@ -22,7 +22,8 @@
 		{
 			"binding": "quizmaker_app_database",
 			"database_name": "quizmaker-app-database",
-			"database_id": "89e47367-0128-45ef-8935-7ec9627b1107"
+			"database_id": "89e47367-0128-45ef-8935-7ec9627b1107",
+			"migrations_dir": "migrations"
 		}
 	]
 	/**

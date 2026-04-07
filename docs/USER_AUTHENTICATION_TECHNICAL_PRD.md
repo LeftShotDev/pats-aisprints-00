@@ -163,7 +163,7 @@ The session is validated in Next.js middleware on every request to a protected r
 
 ## Implementation Phases
 
-### Phase 1: Database & Core Auth Logic - ⏳ PLANNED
+### Phase 1: Database & Core Auth Logic - 🚧 IN PROGRESS
 
 **Objective**: Create the users table migration and implement the core password hashing and session utilities.
 
@@ -412,6 +412,6 @@ export const config = {
 ## Current Status
 
 **Last Updated**: April 7, 2026
-**Current Phase**: Phase 1 - Not started
-**Status**: ⏳ PLANNED
-**Next Steps**: Create D1 migration and implement `src/lib/auth.ts`
+**Current Phase**: Phase 1 - Database & Core Auth Logic
+**Status**: 🚧 IN PROGRESS
+**Next Steps**: Phase 2 — implement the four API route handlers (`/api/auth/signup`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`)
