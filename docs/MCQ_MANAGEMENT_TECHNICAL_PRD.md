@@ -411,18 +411,18 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 6: Preview Mode - ⏳ PLANNED
+### Phase 6: Preview Mode - ✅ COMPLETED
 
 **Objective**: Build the question preview page with answer submission and feedback.
 
 **Tasks**:
 
-1. Create `app/questions/[id]/preview/page.tsx`
-2. Render question stem and answer choices in a clean student-facing layout
-3. Shuffle answer choices randomly on each preview render using a Fisher-Yates shuffle (client-side only — `sort_order` in the database is preserved for editing)
-4. Implement answer selection and submit interaction
-5. Display correct/incorrect feedback after submission
-6. Add "Back to Library" navigation
+1. ✅ Create `app/questions/[id]/preview/page.tsx`
+2. ✅ Render question stem and answer choices in a clean student-facing layout
+3. ✅ Shuffle answer choices randomly on each preview render using a Fisher-Yates shuffle (client-side only — `sort_order` in the database is preserved for editing)
+4. ✅ Implement answer selection and submit interaction
+5. ✅ Display correct/incorrect feedback after submission
+6. ✅ Add "Back to Library" navigation
 
 **Deliverables**:
 
@@ -559,13 +559,18 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 6 - Preview Mode
-**Status**: 🚧 IN PROGRESS
-**Next Steps**: Begin Phase 6 — build the question preview page with answer selection and correct/incorrect feedback
+**Current Phase**: All phases complete
+**Status**: ✅ COMPLETED
+**Next Steps**: All 6 implementation phases complete. Run remote migration and deploy to Cloudflare.
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:09] - Phase 6 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 6 status updated to ✅ COMPLETED. PreviewQuestion component built with Fisher-Yates shuffle on mount, radio-style answer selection, correct/incorrect feedback with colour-coded choice states, and "Try again" reset. Preview page fetches question client-side and handles 403/404. All 41 tests still passing. Current Status updated to all phases complete.
 
 ### [2026-04-08 00:08] - Phase 6 updated with shuffle requirement and security risk note
 
