@@ -330,23 +330,26 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 3: API Endpoints - ⏳ PLANNED
+### Phase 3: API Endpoints - ✅ COMPLETED
 
 **Objective**: Expose the service layer through Next.js API routes.
 
 **Tasks**:
 
-1. Create `app/api/questions/route.ts` — GET (list) and POST (create)
-2. Create `app/api/questions/[id]/route.ts` — GET (single) and PUT (update)
-3. Create `app/api/questions/[id]/archive/route.ts` — PATCH
-4. Create `app/api/questions/[id]/unarchive/route.ts` — PATCH
-5. Add authentication checks to all routes
-6. Add input validation and error responses
+1. ✅ Create `app/api/questions/route.ts` — GET (list) and POST (create)
+2. ✅ Create `app/api/questions/[id]/route.ts` — GET (single) and PUT (update)
+3. ✅ Create `app/api/questions/[id]/archive/route.ts` — PATCH
+4. ✅ Create `app/api/questions/[id]/unarchive/route.ts` — PATCH
+5. ✅ Add authentication checks to all routes
+6. ✅ Add input validation and error responses
 
 **Deliverables**:
 
-- All API route files created
-- Authentication and validation applied
+- `src/app/api/questions/route.ts` — list and create endpoints
+- `src/app/api/questions/[id]/route.ts` — get single and update endpoints
+- `src/app/api/questions/[id]/archive/route.ts` — archive endpoint
+- `src/app/api/questions/[id]/unarchive/route.ts` — unarchive endpoint
+- All routes protected with `getSessionFromRequest`; `QuestionValidationError`, `QuestionNotFoundError`, and `QuestionOwnershipError` mapped to 400/404/403 respectively
 
 ---
 
@@ -534,13 +537,18 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 3 - API Endpoints
+**Current Phase**: Phase 4 - Question Library UI
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Begin Phase 3 — create Next.js API routes for questions (list, create, get, update, archive, unarchive)
+**Next Steps**: Begin Phase 4 — build the question library page with Active/Archived tabs, search, and pagination
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:04] - Phase 3 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 3 status updated to ✅ COMPLETED. All 6 API routes created: GET/POST `/api/questions`, GET/PUT `/api/questions/[id]`, PATCH `/api/questions/[id]/archive`, PATCH `/api/questions/[id]/unarchive`. All routes include authentication and structured error handling. Current Status advanced to Phase 4.
 
 ### [2026-04-08 00:03] - Phase 2 completed
 
