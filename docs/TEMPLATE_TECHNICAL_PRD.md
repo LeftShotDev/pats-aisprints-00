@@ -281,6 +281,7 @@ CREATE TABLE table_name (
 5. Keep all sections current - remove outdated information
 6. Use code references format: `filepath:line-number` when citing code
 7. Update "Current Status" section at the top if needed
+8. Add an entry to the "Change Log" section whenever any part of this document is updated, including the date, time, section changed, and a brief description of the change
 
 ---
 
@@ -297,6 +298,35 @@ CREATE TABLE table_name (
 **Next Steps**: Complete API endpoint testing
 
 ```
+
+---
+
+## Change Log
+
+**Instructions**: Add a brief entry after every change to this document. Include the date, time, what changed, and which section was affected. List entries in reverse chronological order (newest first).
+
+**Format**:
+```
+
+### [YYYY-MM-DD HH:MM] - [Brief change summary]
+
+- **Section**: [Section name where the change was made]
+- **Change**: [Description of what was updated, e.g. "Updated Phase 1 status marker from ⏳ PLANNED to 🚧 IN PROGRESS"]
+
+```
+
+**Example**:
+```
+
+### [2026-04-08 14:32] - Updated Phase 2 status and added API endpoint details
+
+- **Section**: Implementation Phases
+- **Change**: Phase 2 status marker updated from ⏳ PLANNED to 🚧 IN PROGRESS
+
+### [2026-04-08 09:15] - Initial document created
+
+- **Section**: All
+- **Change**: Document created from template with initial requirements defined
 
 ```
 
