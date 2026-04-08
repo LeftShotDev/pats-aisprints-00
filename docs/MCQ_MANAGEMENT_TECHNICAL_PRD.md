@@ -379,7 +379,7 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 5: Create and Edit Forms - ⏳ PLANNED
+### Phase 5: Create and Edit Forms - ✅ COMPLETED
 
 **Objective**: Build the create and edit question forms with dynamic answer choices using a TDD approach for core form logic.
 
@@ -387,25 +387,27 @@ Restore an archived question (set `is_archived = 0`).
 
 **Tasks**:
 
-1. Write tests upfront for `QuestionForm` and `AnswerChoiceList` covering:
+1. ✅ Write tests upfront for `QuestionForm` and `AnswerChoiceList` covering:
    - Adding a choice is disabled when 6 already exist
    - Removing a choice is disabled when only 2 remain
    - Marking a choice correct deselects all others
    - Submitting with no correct answer marked shows a validation error
    - Submitting with fewer than 2 choices shows a validation error
-2. Build `QuestionForm` and `AnswerChoiceList` components to pass the tests
-3. Create `app/questions/new/page.tsx` and `app/questions/[id]/edit/page.tsx`
-4. Wire form submission to POST and PUT API endpoints
-5. Handle and display server-side validation errors
-6. Add tests for API error handling behavior
+2. ✅ Build `QuestionForm` and `AnswerChoiceList` components to pass the tests
+3. ✅ Create `app/questions/new/page.tsx` and `app/questions/[id]/edit/page.tsx`
+4. ✅ Wire form submission to POST and PUT API endpoints
+5. ✅ Handle and display server-side validation errors
+6. ✅ Add tests for API error handling behavior (submit label, disabled state, cancel link, apiError display)
 
 **Deliverables**:
 
-- `src/components/questions/QuestionForm.test.tsx` — written before implementation
-- `src/components/questions/QuestionForm.tsx`
-- `src/components/questions/AnswerChoiceList.tsx`
-- `app/questions/new/page.tsx`
-- `app/questions/[id]/edit/page.tsx`
+- `src/components/questions/QuestionForm.test.tsx` — written before implementation; 14 tests passing
+- `src/components/questions/QuestionForm.tsx` — form with react-hook-form + zod for title/description/body
+- `src/components/questions/AnswerChoiceList.tsx` — fully controlled dynamic choice list
+- `src/app/questions/new/page.tsx` — POSTs to `/api/questions`, redirects to `/questions` on success
+- `src/app/questions/[id]/edit/page.tsx` — fetches question, pre-populates form, PUTs on submit
+- `src/components/ui/textarea.tsx` — installed shadcn Textarea component
+- `src/test/setup.ts` — jest-dom setup for toBeDisabled, toBeInTheDocument matchers
 
 ---
 
@@ -545,13 +547,19 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 5 - Create and Edit Forms
+**Current Phase**: Phase 6 - Preview Mode
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Begin Phase 5 — write QuestionForm and AnswerChoiceList tests upfront (TDD), then build the components and page routes
+**Next Steps**: Begin Phase 6 — build the question preview page with answer selection and correct/incorrect feedback
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:07] - Phase 5 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 5 status updated to ✅ COMPLETED. TDD approach followed: 14 QuestionForm tests written first (confirmed failing), then QuestionForm and AnswerChoiceList built to make them pass. New and Edit page files wired to POST/PUT API. All 41 tests passing across both test files. Current Status advanced to Phase 6.
+- **Verified**: All 41 tests across 2 test suites (`question-service.test.ts` and `QuestionForm.test.tsx`) are passing.
 
 ### [2026-04-08 00:06] - Phase 4 completed
 

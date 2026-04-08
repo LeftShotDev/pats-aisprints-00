@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Pencil, Eye, Archive, ArchiveRestore } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { HighlightedText } from "./HighlightedText";
 import type { Question } from "@/lib/services/question-service";
@@ -45,20 +46,24 @@ export function QuestionCard({
         </div>
 
         <div className="flex shrink-0 items-center gap-1">
-          <Button variant="ghost" size="icon-sm" asChild title="Preview">
-            <Link href={`/questions/${question.id}/preview`}>
-              <Eye />
-              <span className="sr-only">Preview</span>
-            </Link>
-          </Button>
+          <Link
+            href={`/questions/${question.id}/preview`}
+            className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
+            title="Preview"
+          >
+            <Eye />
+            <span className="sr-only">Preview</span>
+          </Link>
 
           {!isArchived && (
-            <Button variant="ghost" size="icon-sm" asChild title="Edit">
-              <Link href={`/questions/${question.id}/edit`}>
-                <Pencil />
-                <span className="sr-only">Edit</span>
-              </Link>
-            </Button>
+            <Link
+              href={`/questions/${question.id}/edit`}
+              className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
+              title="Edit"
+            >
+              <Pencil />
+              <span className="sr-only">Edit</span>
+            </Link>
           )}
 
           {!isArchived && onArchive && (

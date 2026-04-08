@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Search, Plus, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
@@ -184,12 +185,10 @@ export function QuestionLibrary() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-semibold text-foreground">My Questions</h1>
-        <Button asChild size="sm">
-          <Link href="/questions/new">
-            <Plus />
-            Create question
-          </Link>
-        </Button>
+        <Link href="/questions/new" className={cn(buttonVariants({ size: "sm" }))}>
+          <Plus />
+          Create question
+        </Link>
       </div>
 
       <Tabs value={activeTab} onValueChange={handleTabChange}>

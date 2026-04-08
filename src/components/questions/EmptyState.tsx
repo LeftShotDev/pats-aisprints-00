@@ -1,5 +1,6 @@
 import { BookOpen, SearchX } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 interface EmptyStateProps {
@@ -20,9 +21,9 @@ export function EmptyState({ type, onClearSearch }: EmptyStateProps) {
             Get started by creating your first question.
           </p>
         </div>
-        <Button asChild>
-          <Link href="/questions/new">Create question</Link>
-        </Button>
+        <Link href="/questions/new" className={cn(buttonVariants())}>
+          Create question
+        </Link>
       </div>
     );
   }
