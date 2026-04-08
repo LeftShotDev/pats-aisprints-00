@@ -353,27 +353,29 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 4: Question Library UI - ⏳ PLANNED
+### Phase 4: Question Library UI - ✅ COMPLETED
 
 **Objective**: Build the question library page with tabs, search, and pagination.
 
 **Tasks**:
 
-1. Create `app/questions/page.tsx` as the main library page
-2. Implement Active and Archived tab switching
-3. Build question card component with title, description preview, and action buttons
-4. Implement keyword search input with debounced API calls
-5. Implement keyword highlight rendering in search results
-6. Implement pagination controls and page size selector
-7. Build empty state components (new library and no results)
+1. ✅ Create `app/questions/page.tsx` as the main library page
+2. ✅ Implement Active and Archived tab switching
+3. ✅ Build question card component with title, description preview, and action buttons
+4. ✅ Implement keyword search input with debounced API calls (350ms debounce)
+5. ✅ Implement keyword highlight rendering in search results
+6. ✅ Implement pagination controls and page size selector (25/50/100)
+7. ✅ Build empty state components (new library and no results)
 
 **Deliverables**:
 
-- `app/questions/page.tsx`
-- `src/components/questions/QuestionCard.tsx`
-- `src/components/questions/QuestionLibrary.tsx`
-- `src/components/questions/EmptyState.tsx`
-- Pagination and search components
+- `src/app/questions/page.tsx` — library page (server component)
+- `src/components/questions/QuestionLibrary.tsx` — main client component with tabs, search, pagination state
+- `src/components/questions/QuestionCard.tsx` — question card with Edit, Preview, Archive/Restore actions
+- `src/components/questions/EmptyState.tsx` — two distinct empty states (no questions, no results)
+- `src/components/questions/HighlightedText.tsx` — keyword highlight renderer
+- `src/app/mcqs/page.tsx` — updated to redirect to `/questions`
+- `src/middleware.ts` and `src/components/auth/login-form.tsx` — updated default redirect to `/questions`
 
 ---
 
@@ -543,13 +545,18 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 4 - Question Library UI
+**Current Phase**: Phase 5 - Create and Edit Forms
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Begin Phase 4 — build the question library page with Active/Archived tabs, search, and pagination
+**Next Steps**: Begin Phase 5 — write QuestionForm and AnswerChoiceList tests upfront (TDD), then build the components and page routes
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:06] - Phase 4 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 4 status updated to ✅ COMPLETED. Question library UI built including QuestionLibrary, QuestionCard, EmptyState, and HighlightedText components. Tabs, search with 350ms debounce, keyword highlighting, pagination, and page size selector all implemented. Default app redirect updated from `/mcqs` to `/questions` across middleware, login form, and the legacy mcqs page. Current Status advanced to Phase 5.
 
 ### [2026-04-08 00:05] - Phase 5 revised to use TDD approach
 

@@ -47,7 +47,7 @@ export function SignupForm() {
     });
 
     if (response.ok) {
-      router.push("/mcqs");
+      router.push("/questions");
       return;
     }
 

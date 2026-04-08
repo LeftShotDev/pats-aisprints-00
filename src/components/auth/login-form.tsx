@@ -30,7 +30,7 @@ type LoginValues = z.infer<typeof loginSchema>;
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") ?? "/mcqs";
+  const redirect = searchParams.get("redirect") ?? "/questions";
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {

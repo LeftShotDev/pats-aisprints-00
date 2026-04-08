@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 
   if (session && isPublicRoute) {
     const dashboardUrl = request.nextUrl.clone();
-    dashboardUrl.pathname = "/mcqs";
+    dashboardUrl.pathname = "/questions";
     dashboardUrl.search = "";
     return NextResponse.redirect(dashboardUrl);
   }
