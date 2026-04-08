@@ -379,25 +379,31 @@ Restore an archived question (set `is_archived = 0`).
 
 ### Phase 5: Create and Edit Forms - ⏳ PLANNED
 
-**Objective**: Build the create and edit question forms with dynamic answer choices.
+**Objective**: Build the create and edit question forms with dynamic answer choices using a TDD approach for core form logic.
+
+**Approach**: Tests are written upfront for `QuestionForm` and `AnswerChoiceList` before the components are built. Page-level wrappers and API wiring are built first then tested, as their behavior depends on implementation decisions.
 
 **Tasks**:
 
-1. Create `app/questions/new/page.tsx`
-2. Create `app/questions/[id]/edit/page.tsx`
-3. Build shared `QuestionForm` component with:
-  - Title, description, body inputs
-  - Dynamic answer choice list (add/remove/mark correct)
-  - Client-side validation
+1. Write tests upfront for `QuestionForm` and `AnswerChoiceList` covering:
+   - Adding a choice is disabled when 6 already exist
+   - Removing a choice is disabled when only 2 remain
+   - Marking a choice correct deselects all others
+   - Submitting with no correct answer marked shows a validation error
+   - Submitting with fewer than 2 choices shows a validation error
+2. Build `QuestionForm` and `AnswerChoiceList` components to pass the tests
+3. Create `app/questions/new/page.tsx` and `app/questions/[id]/edit/page.tsx`
 4. Wire form submission to POST and PUT API endpoints
 5. Handle and display server-side validation errors
+6. Add tests for API error handling behavior
 
 **Deliverables**:
 
-- `app/questions/new/page.tsx`
-- `app/questions/[id]/edit/page.tsx`
+- `src/components/questions/QuestionForm.test.tsx` — written before implementation
 - `src/components/questions/QuestionForm.tsx`
 - `src/components/questions/AnswerChoiceList.tsx`
+- `app/questions/new/page.tsx`
+- `app/questions/[id]/edit/page.tsx`
 
 ---
 
@@ -544,6 +550,11 @@ This section will be populated as implementation progresses.
 ---
 
 ## Change Log
+
+### [2026-04-08 00:05] - Phase 5 revised to use TDD approach
+
+- **Section**: Implementation Phases
+- **Change**: Phase 5 tasks reordered to lead with writing tests for `QuestionForm` and `AnswerChoiceList` before building the components. Explicit TDD test cases defined upfront (add/remove limits, correct-answer exclusivity, validation). Page-level wrappers and API wiring remain build-first with tests added after. Deliverables updated to include `QuestionForm.test.tsx`.
 
 ### [2026-04-08 00:04] - Phase 3 completed
 
