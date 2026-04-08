@@ -388,11 +388,11 @@ Restore an archived question (set `is_archived = 0`).
 **Tasks**:
 
 1. ✅ Write tests upfront for `QuestionForm` and `AnswerChoiceList` covering:
-   - Adding a choice is disabled when 6 already exist
-   - Removing a choice is disabled when only 2 remain
-   - Marking a choice correct deselects all others
-   - Submitting with no correct answer marked shows a validation error
-   - Submitting with fewer than 2 choices shows a validation error
+  - Adding a choice is disabled when 6 already exist
+  - Removing a choice is disabled when only 2 remain
+  - Marking a choice correct deselects all others
+  - Submitting with no correct answer marked shows a validation error
+  - Submitting with fewer than 2 choices shows a validation error
 2. ✅ Build `QuestionForm` and `AnswerChoiceList` components to pass the tests
 3. ✅ Create `app/questions/new/page.tsx` and `app/questions/[id]/edit/page.tsx`
 4. ✅ Wire form submission to POST and PUT API endpoints
@@ -436,23 +436,23 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 7: Seed Sample Questions - ⏳ PLANNED
+### Phase 7: Seed Sample Questions - ✅ COMPLETED
 
 **Objective**: Populate the database with 40 demo questions across a variety of subject areas, all assigned to the first registered user, to provide realistic seed data for development and demonstration purposes.
 
 **Tasks**:
 
-1. ⏳ Write migration file `0003_seed_sample_questions.sql`
-2. ⏳ Use a CTE to resolve the first user's ID at run time (`SELECT id FROM users ORDER BY created_at ASC LIMIT 1`)
-3. ⏳ Guard all inserts with `WHERE EXISTS (SELECT 1 FROM users)` so the migration silently does nothing on an empty database
-4. ⏳ Insert 40 questions across varied subjects (science, history, geography, maths, literature, sport, general knowledge)
-5. ⏳ Vary answer choice counts between 2 and 6 per question, each with exactly one correct answer
-6. ⏳ Apply migration locally with `wrangler d1 migrations apply quizmaker_app_database --local`
-7. ⏳ Update PRD on completion
+1. ✅ Write migration file `0003_seed_sample_questions.sql`
+2. ✅ Use individual INSERT statements with a subquery to resolve the first user's ID at run time — avoids D1's compound SELECT limit
+3. ✅ Guard all inserts with `WHERE EXISTS (SELECT 1 FROM users)` so the migration silently does nothing on an empty database
+4. ✅ Insert 40 questions across varied subjects (science, history, geography, maths, literature, sport, general knowledge)
+5. ✅ Vary answer choice counts between 2 and 6 per question, each with exactly one correct answer
+6. ✅ Apply migration locally with `wrangler d1 migrations apply quizmaker_app_database --local` (192 commands executed successfully)
+7. ✅ Update PRD on completion
 
 **Deliverables**:
 
-- `migrations/0003_seed_sample_questions.sql`
+- `migrations/0003_0003_seed_sample_questions.sql` — 40 questions, ~152 answer choices, 192 SQL statements
 
 **Notes**:
 
@@ -460,6 +460,7 @@ Restore an archived question (set `is_archived = 0`).
 - The migration is safe to apply to the remote database if demonstration data is desired in production.
 - If no user exists when the migration runs it will silently insert nothing — no error will be thrown.
 - The migration is not idempotent: running it twice on a database that already has a user will insert a second set of 40 questions. It should only be applied once per environment.
+- `UNION ALL` bulk inserts were avoided due to D1's `SQLITE_MAX_COMPOUND_SELECT` limit; each row is a separate `INSERT ... SELECT` statement instead.
 
 ---
 
@@ -586,13 +587,28 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 7 - Seed Sample Questions
-**Status**: ⏳ PLANNED
-**Next Steps**: Write `0003_seed_sample_questions.sql` migration with 40 demo questions guarded by a user-existence check.
+**Current Phase**: All phases complete
+**Status**: ✅ COMPLETED
+**Next Steps**: All 7 implementation phases complete. Apply remote migration if demonstration data is desired in production: `wrangler d1 migrations apply quizmaker_app_database --remote`
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:14] - Remove create button from archived empty state
+
+- **Section**: Change Log
+- **Change**: `EmptyState` component updated with a `showCreateButton` prop (defaults to `true`). When the Archived tab has no questions, the "Create question" button is hidden and the copy reads "No archived questions / Questions you archive will appear here." The Active tab empty state is unchanged.
+
+### [2026-04-08 00:13] - Post-launch cleanup: URL state and home page redirect
+
+- **Section**: Change Log
+- **Change**: Two cleanup items applied outside a formal phase. (1) `QuestionLibrary` tab, search, page, and page-size state moved from React `useState` to URL search params (`useSearchParams` + `useRouter`). The library URL is now fully shareable and the browser Back button restores the exact previous state, including after returning from a preview page. A `Suspense` boundary was added to `app/questions/page.tsx` as required by Next.js App Router. (2) `src/app/page.tsx` replaced with a redirect to `/questions`, so the root URL always routes to the question library (middleware continues to redirect unauthenticated visitors to `/login`).
+
+### [2026-04-08 00:12] - Phase 7 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 7 status updated to ✅ COMPLETED. Migration `0003_0003_seed_sample_questions.sql` written and applied locally (192 SQL commands executed). 40 demo questions seeded across science, history, geography, maths, literature, sport, and general knowledge with 2–6 answer choices each. Individual INSERT statements used instead of UNION ALL to work within D1's compound SELECT limit. Current Status updated to all 7 phases complete.
 
 ### [2026-04-08 00:11] - Phase 7 added to implementation plan
 

@@ -5,10 +5,11 @@ import Link from "next/link";
 
 interface EmptyStateProps {
   type: "no-questions" | "no-results";
+  showCreateButton?: boolean;
   onClearSearch?: () => void;
 }
 
-export function EmptyState({ type, onClearSearch }: EmptyStateProps) {
+export function EmptyState({ type, showCreateButton = true, onClearSearch }: EmptyStateProps) {
   if (type === "no-questions") {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
@@ -16,14 +17,20 @@ export function EmptyState({ type, onClearSearch }: EmptyStateProps) {
           <BookOpen className="size-7 text-muted-foreground" />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="font-medium text-foreground">No questions yet</p>
+          <p className="font-medium text-foreground">
+            {showCreateButton ? "No questions yet" : "No archived questions"}
+          </p>
           <p className="text-sm text-muted-foreground">
-            Get started by creating your first question.
+            {showCreateButton
+              ? "Get started by creating your first question."
+              : "Questions you archive will appear here."}
           </p>
         </div>
-        <Link href="/questions/new" className={cn(buttonVariants())}>
-          Create question
-        </Link>
+        {showCreateButton && (
+          <Link href="/questions/new" className={cn(buttonVariants())}>
+            Create question
+          </Link>
+        )}
       </div>
     );
   }

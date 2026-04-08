@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Search, Plus, Loader2 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -36,14 +37,42 @@ const initialState: QuestionListState = {
 };
 
 export function QuestionLibrary() {
-  const [activeTab, setActiveTab] = useState<"active" | "archived">("active");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<PageSizeOption>("25");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const activeTab = (searchParams.get("tab") ?? "active") as "active" | "archived";
+  const searchQuery = searchParams.get("search") ?? "";
+  const page = Number(searchParams.get("page") ?? "1");
+  const pageSize = (searchParams.get("pageSize") ?? "25") as PageSizeOption;
+
+  const [searchInput, setSearchInput] = useState(searchQuery);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [listState, setListState] = useState<QuestionListState>(initialState);
 
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Keep the text input in sync when navigating back/forward
+  useEffect(() => {
+    setSearchInput(searchQuery);
+  }, [searchQuery]);
+
+  function updateParams(updates: Record<string, string | null>) {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+    // Remove default values to keep URLs clean
+    if (params.get("tab") === "active") params.delete("tab");
+    if (params.get("page") === "1") params.delete("page");
+    if (params.get("pageSize") === "25") params.delete("pageSize");
+    const qs = params.toString();
+    router.push(`${pathname}${qs ? `?${qs}` : ""}`);
+  }
 
   const fetchQuestions = useCallback(
     async (opts: {
@@ -87,52 +116,38 @@ export function QuestionLibrary() {
       page,
       pageSize,
     });
-  }, [activeTab, searchQuery, page, pageSize, fetchQuestions]);
+  }, [activeTab, searchQuery, page, pageSize, refreshKey, fetchQuestions]);
 
   function handleSearchChange(value: string) {
     setSearchInput(value);
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
-      setSearchQuery(value);
-      setPage(1);
+      updateParams({ search: value, page: null });
     }, 350);
   }
 
   function handleClearSearch() {
     setSearchInput("");
-    setSearchQuery("");
-    setPage(1);
+    updateParams({ search: null, page: null });
   }
 
   function handleTabChange(value: string) {
-    setActiveTab(value as "active" | "archived");
-    setPage(1);
+    updateParams({ tab: value, page: null });
   }
 
   function handlePageSizeChange(value: string | null) {
     if (!value) return;
-    setPageSize(value as PageSizeOption);
-    setPage(1);
+    updateParams({ pageSize: value, page: null });
   }
 
   async function handleArchive(id: string) {
     await fetch(`/api/questions/${id}/archive`, { method: "PATCH" });
-    fetchQuestions({
-      archived: false,
-      search: searchQuery,
-      page,
-      pageSize,
-    });
+    setRefreshKey((k) => k + 1);
   }
 
   async function handleUnarchive(id: string) {
     await fetch(`/api/questions/${id}/unarchive`, { method: "PATCH" });
-    fetchQuestions({
-      archived: true,
-      search: searchQuery,
-      page,
-      pageSize,
-    });
+    setRefreshKey((k) => k + 1);
   }
 
   const { questions, pagination, loading, error } = listState;
@@ -158,6 +173,7 @@ export function QuestionLibrary() {
       return (
         <EmptyState
           type="no-questions"
+          showCreateButton={!isArchived}
         />
       );
     }
@@ -246,7 +262,7 @@ export function QuestionLibrary() {
               variant="outline"
               size="sm"
               disabled={pagination.page <= 1}
-              onClick={() => setPage((p) => p - 1)}
+              onClick={() => updateParams({ page: String(page - 1) })}
             >
               Previous
             </Button>
@@ -254,7 +270,7 @@ export function QuestionLibrary() {
               variant="outline"
               size="sm"
               disabled={pagination.page >= pagination.totalPages}
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => updateParams({ page: String(page + 1) })}
             >
               Next
             </Button>
