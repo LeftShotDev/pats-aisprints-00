@@ -436,6 +436,33 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
+### Phase 7: Seed Sample Questions - ⏳ PLANNED
+
+**Objective**: Populate the database with 40 demo questions across a variety of subject areas, all assigned to the first registered user, to provide realistic seed data for development and demonstration purposes.
+
+**Tasks**:
+
+1. ⏳ Write migration file `0003_seed_sample_questions.sql`
+2. ⏳ Use a CTE to resolve the first user's ID at run time (`SELECT id FROM users ORDER BY created_at ASC LIMIT 1`)
+3. ⏳ Guard all inserts with `WHERE EXISTS (SELECT 1 FROM users)` so the migration silently does nothing on an empty database
+4. ⏳ Insert 40 questions across varied subjects (science, history, geography, maths, literature, sport, general knowledge)
+5. ⏳ Vary answer choice counts between 2 and 6 per question, each with exactly one correct answer
+6. ⏳ Apply migration locally with `wrangler d1 migrations apply quizmaker_app_database --local`
+7. ⏳ Update PRD on completion
+
+**Deliverables**:
+
+- `migrations/0003_seed_sample_questions.sql`
+
+**Notes**:
+
+- This is seed/demo data. Questions are illustrative and not curriculum-aligned.
+- The migration is safe to apply to the remote database if demonstration data is desired in production.
+- If no user exists when the migration runs it will silently insert nothing — no error will be thrown.
+- The migration is not idempotent: running it twice on a database that already has a user will insert a second set of 40 questions. It should only be applied once per environment.
+
+---
+
 ## Technical Implementation Details
 
 This section will be populated as implementation progresses.
@@ -559,13 +586,18 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: All phases complete
-**Status**: ✅ COMPLETED
-**Next Steps**: All 6 implementation phases complete. Run remote migration and deploy to Cloudflare.
+**Current Phase**: Phase 7 - Seed Sample Questions
+**Status**: ⏳ PLANNED
+**Next Steps**: Write `0003_seed_sample_questions.sql` migration with 40 demo questions guarded by a user-existence check.
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:11] - Phase 7 added to implementation plan
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Added Phase 7 (Seed Sample Questions) as ⏳ PLANNED. Phase will create migration `0003_seed_sample_questions.sql` inserting 40 demo questions for the first user, guarded by a user-existence check for silent failure on empty databases. Current Status updated to reflect Phase 7 as the next step.
 
 ### [2026-04-08 00:10] - Deployment and remote migration verified
 
