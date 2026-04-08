@@ -25,9 +25,9 @@ Teachers can build and organize a personal library of multiple choice questions.
 
 - **Create questions** with a title, description, question stem, and 2 to 6 answer choices with exactly one correct answer
 - **Edit questions** to refine wording, adjust choices, or change the correct answer
-- **Delete questions** that are no longer needed
+- **Archive questions** that are no longer needed, with the ability to restore archived questions at any time
 - **Search and browse** the question library with keyword search and pagination
-- **Preview and attempt** questions in a quiz-taking view to verify they work as intended before use in the classroom
+- **Preview questions** in a student-facing view to verify they work as intended before classroom use — teachers can select an answer and receive correct/incorrect feedback
 
 ### 3. AI-Powered TEKS-Aligned Question Generation
 
@@ -55,7 +55,7 @@ The AI generates a complete question with title, description, question stem, fou
 1. Teacher logs in and sees their question library with search and pagination
 2. Teacher creates questions manually or uses "Generate with TEKS" for AI-assisted creation
 3. Teacher previews questions to verify correctness before classroom use
-4. Teacher edits or deletes questions as curriculum needs evolve
+4. Teacher edits or archives questions as curriculum needs evolve
 
 ### Question Creation Options
 
@@ -76,9 +76,9 @@ The AI generates a complete question with title, description, question stem, fou
 ### Included
 
 - Teacher registration and authentication
-- Full MCQ CRUD (create, read, update, delete)
+- Full MCQ management (create, read, update, archive, restore)
 - Search and pagination for question library
-- Question preview with attempt tracking
+- Question preview with correct/incorrect feedback (no attempt tracking)
 - AI question generation aligned to TEKS (Math and Science, Grades 3-6)
 
 ### Future Considerations
