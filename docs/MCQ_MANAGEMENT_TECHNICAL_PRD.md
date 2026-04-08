@@ -306,27 +306,27 @@ Restore an archived question (set `is_archived = 0`).
 
 ---
 
-### Phase 2: Service Layer - ⏳ PLANNED
+### Phase 2: Service Layer - ✅ COMPLETED
 
 **Objective**: Build the data access and business logic layer for question management.
 
 **Tasks**:
 
-1. Create `src/lib/services/question-service.ts` with functions for:
+1. ✅ Create `src/lib/services/question-service.ts` with functions for:
   - `listQuestions` (with search, pagination, archived filter)
   - `getQuestion`
   - `createQuestion`
   - `updateQuestion`
   - `archiveQuestion`
   - `unarchiveQuestion`
-2. Ensure all queries use prepared statements via `d1-client.ts` helpers
-3. Enforce teacher ownership checks in all mutation functions
-4. Write unit tests for the service layer
+2. ✅ Ensure all queries use prepared statements via `d1-client.ts` helpers
+3. ✅ Enforce teacher ownership checks in all mutation functions
+4. ✅ Write unit tests for the service layer (27/27 passing)
 
 **Deliverables**:
 
-- `src/lib/services/question-service.ts`
-- `src/lib/services/question-service.test.ts`
+- `src/lib/services/question-service.ts` — all service functions implemented
+- `src/lib/services/question-service.test.ts` — 27 tests covering success paths, validation, ownership, and error cases
 
 ---
 
@@ -534,13 +534,19 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Phase 2 - Service Layer
+**Current Phase**: Phase 3 - API Endpoints
 **Status**: 🚧 IN PROGRESS
-**Next Steps**: Begin Phase 2 — build `src/lib/services/question-service.ts` with all data access functions
+**Next Steps**: Begin Phase 3 — create Next.js API routes for questions (list, create, get, update, archive, unarchive)
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:03] - Phase 2 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 2 status updated to ✅ COMPLETED. Service layer implemented in `src/lib/services/question-service.ts` with all six service functions. 27 unit tests written and passing. Vitest installed and configured. Current Status advanced to Phase 3.
+- **Verified**: I have personally run and verified all 27 unit tests are passing.
 
 ### [2026-04-08 00:02] - Remote migration confirmed ready
 
