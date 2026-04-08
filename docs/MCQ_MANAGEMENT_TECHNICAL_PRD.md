@@ -288,21 +288,21 @@ Restore an archived question (set `is_archived = 0`).
 
 ## Implementation Phases
 
-### Phase 1: Database Schema and Migrations - ⏳ PLANNED
+### Phase 1: Database Schema and Migrations - ✅ COMPLETED
 
 **Objective**: Set up the database tables needed to store questions and answer choices.
 
 **Tasks**:
 
-1. Create migration for `questions` table with all columns and indexes
-2. Create migration for `answer_choices` table with all columns and indexes
-3. Apply migrations to local D1 database
-4. Verify schema with a manual inspection of the local database
+1. ✅ Create migration for `questions` table with all columns and indexes
+2. ✅ Create migration for `answer_choices` table with all columns and indexes
+3. ✅ Apply migrations to local D1 database
+4. ✅ Verify schema with a manual inspection of the local database
 
 **Deliverables**:
 
-- Migration files created and applied locally
-- Schema confirmed correct
+- `migrations/0002_0002_create_questions_and_answer_choices.sql` — created and applied locally
+- Schema confirmed correct via `sqlite_master` inspection
 
 ---
 
@@ -534,13 +534,18 @@ This section will be populated as implementation progresses.
 ## Current Status
 
 **Last Updated**: 2026-04-08
-**Current Phase**: Pre-implementation — PRD complete
-**Status**: ⏳ PLANNED
-**Next Steps**: Begin Phase 1 — create and apply database migrations for `questions` and `answer_choices` tables
+**Current Phase**: Phase 2 - Service Layer
+**Status**: 🚧 IN PROGRESS
+**Next Steps**: Begin Phase 2 — build `src/lib/services/question-service.ts` with all data access functions
 
 ---
 
 ## Change Log
+
+### [2026-04-08 00:01] - Phase 1 completed
+
+- **Section**: Implementation Phases, Current Status
+- **Change**: Phase 1 status updated to ✅ COMPLETED. Migration `0002_0002_create_questions_and_answer_choices.sql` created and applied to local D1 database. Current Status updated to Phase 2 IN PROGRESS.
 
 ### [2026-04-08 00:00] - Initial document created
 
