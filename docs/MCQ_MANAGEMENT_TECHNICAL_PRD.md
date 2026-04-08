@@ -419,14 +419,20 @@ Restore an archived question (set `is_archived = 0`).
 
 1. Create `app/questions/[id]/preview/page.tsx`
 2. Render question stem and answer choices in a clean student-facing layout
-3. Implement answer selection and submit interaction
-4. Display correct/incorrect feedback after submission
-5. Add "Back to Library" navigation
+3. Shuffle answer choices randomly on each preview render using a Fisher-Yates shuffle (client-side only — `sort_order` in the database is preserved for editing)
+4. Implement answer selection and submit interaction
+5. Display correct/incorrect feedback after submission
+6. Add "Back to Library" navigation
 
 **Deliverables**:
 
-- `app/questions/[id]/preview/page.tsx`
+- `src/app/questions/[id]/preview/page.tsx`
 - `src/components/questions/PreviewQuestion.tsx`
+
+**Notes**:
+
+- Shuffling is purely a client-side presentation concern. No database or API changes are required. The `is_correct` flag on each choice identifies the correct answer regardless of display order.
+- The `GET /api/questions/[id]` response includes `is_correct` on each choice, meaning the correct answer is visible in the network response before submission. This is acceptable for the current teacher-only scope but must be addressed before any student-facing delivery is built (see Risks).
 
 ---
 
@@ -527,6 +533,12 @@ This section will be populated as implementation progresses.
 - **Risk**: Form loses data if the teacher navigates away mid-edit
 - **Mitigation**: Show a browser confirmation dialog before leaving a form with unsaved changes
 
+### Security Risks (Future)
+
+- **Risk**: The `GET /api/questions/[id]` endpoint returns `is_correct` on all answer choices. Anyone inspecting the network response in DevTools can see the correct answer before submitting in preview mode.
+- **Mitigation (current scope)**: Acceptable for now — preview is teacher-only and teachers already know their own answers. Authentication ensures only the owning teacher can access the endpoint.
+- **Mitigation (if student-facing delivery is built)**: Strip `is_correct` from the student-facing API response. Expose the correct answer only via a separate post-submission "check answer" endpoint, or return it only in the submission response after the student has locked in their choice.
+
 ---
 
 ## Notes for AI Agents
@@ -554,6 +566,11 @@ This section will be populated as implementation progresses.
 ---
 
 ## Change Log
+
+### [2026-04-08 00:08] - Phase 6 updated with shuffle requirement and security risk note
+
+- **Section**: Implementation Phases, Risks and Mitigation
+- **Change**: Phase 6 tasks updated to include client-side Fisher-Yates shuffle of answer choices on each preview render. Notes added clarifying no data changes are required. New Security Risks section added documenting that `is_correct` is exposed in the API response, with current mitigation (teacher-only scope) and future mitigation guidance if student-facing delivery is ever built.
 
 ### [2026-04-08 00:07] - Phase 5 completed
 
