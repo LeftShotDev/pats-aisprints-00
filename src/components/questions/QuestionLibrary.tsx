@@ -109,7 +109,8 @@ export function QuestionLibrary() {
     setPage(1);
   }
 
-  function handlePageSizeChange(value: string) {
+  function handlePageSizeChange(value: string | null) {
+    if (!value) return;
     setPageSize(value as PageSizeOption);
     setPage(1);
   }
