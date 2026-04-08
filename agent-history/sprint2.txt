@@ -1,0 +1,230 @@
+AGENT CHAT HISTORY — SPRINT 2
+Date: 2026-04-08
+================================================================================
+
+SUMMARY
+-------
+Sprint 2 focused on completing and shipping the Multiple Choice Question (MCQ)
+Management feature. The session began mid-feature (Phases 1–6 were completed in
+Sprint 1) and covered: fixing a production deploy error, planning and implementing
+Phase 7 (seed data), a set of post-launch cleanup improvements, and ongoing
+documentation maintenance.
+
+================================================================================
+SESSION LOG
+================================================================================
+
+--- DEPLOY FIX ---
+
+USER: I am running into the following deploy error:
+  npm run deploy
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'esbuild' imported from
+  /node_modules/@opennextjs/cloudflare/dist/cli/build/bundle-server.js
+
+ASSISTANT: Installed missing `esbuild` dev dependency (required by
+@opennextjs/cloudflare). Retried deploy — encountered a second error:
+TypeScript type mismatch in QuestionLibrary.tsx. The shadcn Select
+`onValueChange` callback signature includes `string | null` but the handler
+only accepted `string`. Updated `handlePageSizeChange` to accept
+`string | null` with an early return guard. Deploy succeeded.
+
+  Deployed to: https://aisprints-quizmaker.pat-fbb.workers.dev
+
+USER: Make one new entry to the changelog. Code has been successfully deployed.
+Migrations have been run and verified.
+
+ASSISTANT: Added changelog entry [2026-04-08 00:10] to MCQ_MANAGEMENT_TECHNICAL_PRD.md
+recording successful deployment to Cloudflare Workers and remote D1 migration
+verification.
+
+USER: Stage the listed unstaged changes, commit, and push.
+  Files: package-lock.json, package.json, docs/MCQ_MANAGEMENT_TECHNICAL_PRD.md,
+         src/components/questions/QuestionLibrary.tsx
+
+ASSISTANT: Committed and pushed as:
+  "Fix deploy errors and record production deployment" (71a056e)
+
+--------------------------------------------------------------------------------
+
+--- PHASE 7 PLANNING ---
+
+USER: I'd like to add one more implementation plan to the MCQ PRD. Add a list of
+40 questions to the first user in the database. Run through this idea, think
+through a plan, see what limitations you would have to create a new migration
+file, and present any questions or suggestions. Wait for verification before
+modifying the PRD.
+
+ASSISTANT: Presented plan and limitations:
+  - Migration approach: SQL file with subquery for first user ID
+  - Limitation: Requires at least one user to exist; fails with NOT NULL if empty
+  - Suggestion: Use WHERE EXISTS guard for silent failure on empty databases
+  - Note: Not idempotent; must only be applied once per environment
+  Questions asked:
+    1. Silent fail or loud fail on empty database?
+    2. Subject matter preferences?
+    3. Fixed or varied answer choice count?
+    4. Label as seed/demo data?
+    5. Remote apply intent?
+
+USER: The migration can be allowed to silently fail. Subject variety is completely
+up to you. A variety of answer choices is ideal. Labelling as seed/demo data is a
+great idea. I may apply this to a remote database as well.
+
+ASSISTANT: Added Phase 7 (Seed Sample Questions) as PLANNED to the PRD. Documented
+silent-fail guard, seed/demo labelling, idempotency warning, and remote apply note.
+Updated Current Status.
+
+USER: Stage, commit, and push (docs/MCQ_MANAGEMENT_TECHNICAL_PRD.md)
+
+ASSISTANT: Committed and pushed as:
+  "Add Phase 7 (seed sample questions) to MCQ PRD" (e18623d)
+
+--------------------------------------------------------------------------------
+
+--- PHASE 7 IMPLEMENTATION ---
+
+USER: Implement Phase 7.
+
+ASSISTANT: Created migration file via wrangler:
+  migrations/0003_0003_seed_sample_questions.sql
+
+  Attempt 1: Used UNION ALL to bulk-insert 40 questions in two batches of 20.
+  Failed with: "too many terms in compound SELECT: SQLITE_ERROR"
+  (D1 has a lower SQLITE_MAX_COMPOUND_SELECT limit than standard SQLite)
+
+  Attempt 2: Used UNION ALL with batches of 20. Still failed.
+
+  Attempt 3: Rewrote with individual INSERT ... SELECT statements per row —
+  one INSERT per question, one INSERT per answer choice. No UNION ALL.
+  Applied successfully: 192 commands executed.
+
+  Migration details:
+  - 40 questions across 8 subjects: science, history, geography, maths,
+    literature, sport, biology, general knowledge
+  - Answer choice counts vary: 2 (1 question), 3 (11), 4 (23), 5 (5)
+  - Each question guarded by WHERE EXISTS (SELECT 1 FROM users)
+  - Teacher ID resolved via (SELECT id FROM users ORDER BY created_at ASC LIMIT 1)
+
+  PRD updated: Phase 7 status → COMPLETED. Current Status → all 7 phases complete.
+  Noted D1 compound SELECT workaround in deliverables.
+
+USER: Stage, commit, and push (all 6 files including migration and PRD)
+
+ASSISTANT: Committed and pushed as:
+  "Seed questions, URL-based library state, and UI cleanup" (7902cf8)
+  (combined with the subsequent cleanup changes below)
+
+--------------------------------------------------------------------------------
+
+--- POST-LAUNCH CLEANUP ---
+
+USER: I am running into the following deploy error... [same esbuild/TypeScript
+context — already resolved above]
+
+USER: One more small cleanup. When switching between archive and active questions,
+this seems to be using state management. I think it'd be more preferable to rely
+on a query parameter in the URL instead. Use case: when you preview an individual
+question and try to go back to the listing, you don't always go back to the same
+place. Also, after logging in, could we have the initial page URL redirect directly
+to the questions page?
+
+ASSISTANT: Implemented two changes:
+
+  1. URL-based library state (QuestionLibrary.tsx):
+     - Replaced useState for activeTab, searchQuery, page, pageSize with
+       useSearchParams + useRouter + usePathname from next/navigation
+     - Added updateParams() helper to write changes back to the URL
+     - Kept searchInput as local state only (for debounce buffer)
+     - Added useEffect to sync input when user navigates Back/Forward
+     - Pagination Previous/Next buttons updated to call updateParams
+     - handleArchive/handleUnarchive use a refreshKey increment instead of
+       directly calling fetchQuestions (since URL params didn't change)
+     - Default values omitted from URL to keep it clean:
+       tab=active, page=1, pageSize=25 are not written to the URL
+     - Example sharable URL: /questions?tab=archived&search=gravity&page=2
+     - Added Suspense boundary to app/questions/page.tsx (required by
+       Next.js App Router when using useSearchParams)
+
+  2. Home page redirect (src/app/page.tsx):
+     - Replaced the default Next.js boilerplate page with a redirect to /questions
+     - Unauthenticated visitors are caught by middleware and sent to /login
+
+  Changelog entry added to MCQ PRD.
+
+USER: One final small change. Remove the ability to add a question on the archive
+page when there are no questions listed.
+
+ASSISTANT: Updated EmptyState.tsx:
+  - Added showCreateButton prop (defaults to true — no breaking change)
+  - When false: button hidden, heading → "No archived questions",
+    subtext → "Questions you archive will appear here."
+  - When true (active tab): heading → "No questions yet",
+    subtext → "Get started by creating your first question."
+
+  Updated QuestionLibrary.tsx:
+  - Passes showCreateButton={!isArchived} to EmptyState
+
+  Changelog entry added to MCQ PRD.
+
+USER: Stage the listed unstaged changes, commit, and push.
+  Files: docs/MCQ_MANAGEMENT_TECHNICAL_PRD.md,
+         migrations/0003_0003_seed_sample_questions.sql,
+         src/app/page.tsx, src/app/questions/page.tsx,
+         src/components/questions/EmptyState.tsx,
+         src/components/questions/QuestionLibrary.tsx
+
+ASSISTANT: Committed and pushed as:
+  "Seed questions, URL-based library state, and UI cleanup" (7902cf8)
+
+--------------------------------------------------------------------------------
+
+--- AGENT HISTORY ---
+
+USER: Create the agent history file for this agent window. Label it as sprint2.txt.
+
+ASSISTANT: Created this file at agent-history/sprint2.txt.
+
+================================================================================
+KEY FILES MODIFIED THIS SPRINT
+================================================================================
+
+  package.json / package-lock.json
+    - Added esbuild as dev dependency (required by @opennextjs/cloudflare)
+
+  docs/MCQ_MANAGEMENT_TECHNICAL_PRD.md
+    - Added Phase 7 (Seed Sample Questions)
+    - Marked Phase 7 COMPLETED
+    - Multiple changelog entries throughout session
+
+  migrations/0003_0003_seed_sample_questions.sql (new)
+    - 40 demo questions with varied answer choices for first registered user
+    - 192 individual INSERT statements (UNION ALL avoided due to D1 limits)
+    - Silent-fail guard via WHERE EXISTS
+
+  src/app/page.tsx
+    - Replaced Next.js boilerplate with redirect("/questions")
+
+  src/app/questions/page.tsx
+    - Added <Suspense> boundary around QuestionLibrary
+
+  src/components/questions/QuestionLibrary.tsx
+    - Tab, search, page, pageSize moved from useState to URL search params
+    - Added updateParams() helper, refreshKey for post-archive refetch
+    - Pagination buttons use updateParams instead of setPage
+    - Fixed TypeScript type error: onValueChange accepts string | null
+
+  src/components/questions/EmptyState.tsx
+    - Added showCreateButton prop
+    - Archived tab shows distinct messaging with no create button
+
+================================================================================
+COMMITS THIS SPRINT
+================================================================================
+
+  71a056e  Fix deploy errors and record production deployment
+  e18623d  Add Phase 7 (seed sample questions) to MCQ PRD
+  7902cf8  Seed questions, URL-based library state, and UI cleanup
+
+================================================================================
+END OF SPRINT 2
+================================================================================
